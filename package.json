@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "query-string": "^9.0.0",
+    "react-countup": "^6.5.3"
+  }
+}
