@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 //import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,37 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+export const authFormSchema = (type: string) => z.object
+  ({
+
+    //sign up                               
+    firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    address1: type === 'sign-in' ? z.string().optional() : z.string().max(50),
+    city: type === 'sign-in' ? z.string().optional() : z.string().max(50),
+    state: type === 'sign-in' ? z.string().optional() : z.string().min(2).max(2),
+    postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(3).max(6),
+    dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3),
+    //both sign in and up
+    email: z.string().email(),
+    password: z.string().min(8),
+
+  })
+
+// export const authFormSchema = (type: string) => z.object({
+//   // sign-up specific fields
+//   firstName: type === 'sign-in' ? z.string().optional() : z.string().min(3, "First name must be at least 3 characters long"),
+//   lastName: type === 'sign-in' ? z.string().optional() : z.string().min(3, "Last name must be at least 3 characters long"),
+//   address1: type === 'sign-in' ? z.string().optional() : z.string().max(50, "Address1 can be up to 50 characters long"),
+//   city: type === 'sign-in' ? z.string().optional() : z.string().max(50, "City can be up to 50 characters long"),
+//   state: type === 'sign-in' ? z.string().optional() : z.string().min(2, "State must be 2 characters long").max(2, "State must be 2 characters long"),
+//   postalCode: type === 'sign-in' ? z.string().optional() : z.string().min(3, "Postal code must be at least 3 characters long").max(6, "Postal code can be up to 6 characters long"),
+//   dateOfBirth: type === 'sign-in' ? z.string().optional() : z.string().min(3, "Date of birth must be at least 3 characters long"),
+//   ssn: type === 'sign-in' ? z.string().optional() : z.string().min(3, "SSN must be at least 3 characters long"),
+
+//   // fields common to both sign-in and sign-up
+//   email: z.string().email("Invalid email format"),
+//   password: z.string().min(8, "Password must be at least 8 characters long"),
+// });
